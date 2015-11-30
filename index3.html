@@ -4,7 +4,7 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Tag: Reading &mdash; Yi's Blog  -  Do. Or do not. There is no try</title>
+  <title>Yi's Blog  -  Do. Or do not. There is no try</title>
   <meta name="author" content="YiHan">
 
 
@@ -62,34 +62,64 @@
 </ul></nav>
   <div id="main">
     <div id="content">
-<div>
-	<article role="article">
-    	<header>
-    		<h1 class="entry-title">Tag: Reading</h1>
-    	</header>
+<div class="blog-index">
+  		<article>
+<header>
+      <h1 class="entry-title">
+        <a href="http://www.yilaguan.cc/python-zhu-zhuang-dong-tu.html">Python 柱状动图</a>
+      </h1>
+    <p class="meta">
+<time datetime="2015-10-28T00:00:00+08:00" pubdate>Wed 28 October 2015</time>    </p>
+</header>
 
-    	<div id="blog-archives">
-            <h2>2015</h2>
-                    <article>
-                        <h1><a href="http://www.yilaguan.cc/zhong-gou-_gai-shan-ji-you-dai-ma-de-she-ji.html">重构_改善既有代码的设计</a></h1>
-                        <time datetime="2015-11-24 00:00:00+08:00" pubdate>
-                            <span class="month">Nov</span>
-                            <span class="day">24</span>
-                            <span class="year">2015</span>
-                        </time>
-                        <footer>
-                            <span class="categories">posted in
-                                <a class='category' href='http://www.yilaguan.cc/category/reading.html'>Reading</a>
-                            </span>
-                        </footer>
-                    </article>
-	    </div>
-    </article>
-</div>
+  <div class="entry-content"><h2>安装依赖</h2>
+<ul>
+<li>apt-get install python-numpy</li>
+<li>sudo apt-get install matplotlib</li>
+</ul>
+<h2>代码</h2>
+<div class="highlight"><pre><span class="k">class</span> <span class="nc">Bar</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">show</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">datas</span><span class="p">):</span>
+        <span class="kn">import</span> <span class="nn">matplotlib</span>
+        <span class="kn">import</span> <span class="nn">time</span>
+        <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+        <span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="kp">array</span>
+
+        <span class="n">matplotlib</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s">&#39;TKAgg&#39;</span><span class="p">)</span>
+
+        <span class="k">def</span> <span class="nf">animated_barplot</span><span class="p">():</span>
+            <span class="c"># http://www.scipy.org/Cookbook/Matplotlib/Animations</span>
+
+            <span class="n">x</span> <span class="o">=</span> <span class="kp">array</span><span class="p">(</span><span class="n">datas</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="k">print</span> <span class="n">x</span>
+            <span class="n">rects</span> <span class="o">=</span> <span class="n">plt ...</span></pre></div></div>
+  <footer>
+    <a rel="full-article" href="http://www.yilaguan.cc/python-zhu-zhuang-dong-tu.html">Read On &crarr;</a>
+  </footer>
+  		</article>
+<div class="pagination">
+
+    <a class="next" href="http://www.yilaguan.cc/index2.html">Newer &rarr;</a>
+  <br />
+</div></div>
 <aside class="sidebar">
   <section>
     <h1>Recent Posts</h1>
     <ul id="recent_posts">
+      <li class="post">
+          <a href="http://www.yilaguan.cc/ding-wei-autoconfigmo-ban-wen-jian.html">定位autoconfig模板文件</a>
+      </li>
+      <li class="post">
+          <a href="http://www.yilaguan.cc/shell-bi-jiao.html">shell 比较</a>
+      </li>
+      <li class="post">
+          <a href="http://www.yilaguan.cc/shelljiao-ben-pian-duan.html">shell脚本片段</a>
+      </li>
+      <li class="post">
+          <a href="http://www.yilaguan.cc/nginx-php-fpm.html">Nginx, Php-fpm</a>
+      </li>
       <li class="post">
           <a href="http://www.yilaguan.cc/zhong-gou-_gai-shan-ji-you-dai-ma-de-she-ji.html">重构_改善既有代码的设计</a>
       </li>

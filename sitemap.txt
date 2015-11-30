@@ -6,6 +6,9 @@ http://www.yilaguan.cc/
 http://www.yilaguan.cc/archives.html
 http://www.yilaguan.cc/tags.html
 http://www.yilaguan.cc/categories.html
+http://www.yilaguan.cc/ding-wei-autoconfigmo-ban-wen-jian.html
+http://www.yilaguan.cc/shell-bi-jiao.html
+http://www.yilaguan.cc/shelljiao-ben-pian-duan.html
 http://www.yilaguan.cc/nginx-php-fpm.html
 http://www.yilaguan.cc/zhong-gou-_gai-shan-ji-you-dai-ma-de-she-ji.html
 http://www.yilaguan.cc/iptables-xiao-jie.html
@@ -32,9 +35,9 @@ http://www.yilaguan.cc/category/linux.html
 http://www.yilaguan.cc/category/python.html
 http://www.yilaguan.cc/category/reading.html
 http://www.yilaguan.cc/tag/sort.html
-http://www.yilaguan.cc/tag/ebs.html
-http://www.yilaguan.cc/tag/kibana.html
 http://www.yilaguan.cc/tag/linux.html
+http://www.yilaguan.cc/tag/kibana.html
+http://www.yilaguan.cc/tag/ebs.html
 http://www.yilaguan.cc/tag/java.html
 http://www.yilaguan.cc/tag/log.html
 http://www.yilaguan.cc/tag/cache.html
@@ -44,6 +47,7 @@ http://www.yilaguan.cc/tag/glassfish.html
 http://www.yilaguan.cc/tag/elasticsearch.html
 http://www.yilaguan.cc/tag/reading.html
 http://www.yilaguan.cc/tag/iptables.html
+http://www.yilaguan.cc/tag/shell.html
 http://www.yilaguan.cc/tag/plsql.html
 http://www.yilaguan.cc/tag/python.html
 http://www.yilaguan.cc/tag/docs.html
