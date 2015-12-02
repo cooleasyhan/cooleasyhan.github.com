@@ -66,7 +66,59 @@
   		<article>
 <header>
       <h1 class="entry-title">
-        <a href="http://www.yilaguan.cc/ding-wei-autoconfigmo-ban-wen-jian.html">定位autoconfig模板文件</a>
+        <a href="http://www.yilaguan.cc/posts/2015/12/02/li-yong-nginx-zhuan-fa-ebs.html">利用nginx 转发 EBS</a>
+      </h1>
+    <p class="meta">
+<time datetime="2015-12-02T00:00:00+08:00" pubdate>Wed 02 December 2015</time>    </p>
+</header>
+
+  <div class="entry-content"><h2>需求</h2>
+<p>EBS 服务器搭建在内网上， 需要开放给外网使用。 <br />
+实现： EBS 设置单一网络入口点，  外网服务器上配置nginx 转发至内网服务器。</p>
+<h2>配置EBS</h2>
+<h3>修改host文件， 在EBS app 服务器上添加相关host</h3>
+<div class="highlight"><pre>110.10.10.10 prod.xxx.xxx.xxx prod
+</pre></div>
+
+
+<h3>修改 $CONTEXT_FILE , 配置EBS单一网络入口</h3>
+<p>http://app01.domain.name:8000  ===&gt;   http://prod.domain.name:80<br />
+修改前后比对</p>
+<div class="highlight"><pre>[applprod@app01 admin]$ diff PROD_app01.xml PROD_app01.xml.bak 
+123c123
+<span class="err">&lt;</span>          <span class="nt">&lt;chronosURL</span> <span class="na">oa_var=</span><span class="s">&quot;s_chronosURL ...</span></pre></div></div>
+  <footer>
+    <a rel="full-article" href="http://www.yilaguan.cc/posts/2015/12/02/li-yong-nginx-zhuan-fa-ebs.html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  		<article>
+<header>
+      <h1 class="entry-title">
+        <a href="http://www.yilaguan.cc/posts/2015/12/01/ar-she-zhi-shu-ju-data-fix.html">AR 设置数据data fix</a>
+      </h1>
+    <p class="meta">
+<time datetime="2015-12-01T00:00:00+08:00" pubdate>Tue 01 December 2015</time>    </p>
+</header>
+
+  <div class="entry-content"><h2>通知单行：</h2>
+<div class="highlight"><pre>--1.备份数据
+CREATE TABLE Ar_Memo_Lines_All_Tl_0529 AS
+  SELECT * FROM Ar_Memo_Lines_All_Tl;
+
+--2. 创建临时表
+CREATE TABLE Cux_Ar_Memo_Lines_Df_0529(Memo_Line_Id NUMBER, Ou_Name VARCHAR2(240), NAME VARCHAR2(50), Description VARCHAR2(80), New_Name VARCHAR2(52), New_Description VARCHAR2(90))
+
+--3. 修正临时表中数据
+UPDATE Cux_Ar_Memo_Lines_Df_0529 d SET(Memo_Line_Id, New_Name, New_Description) = (
+  SELECT Tl.Memo_Line_Id, d.Name || &#39;_O&#39;, d.Description || &#39;-历史 ...</pre></div></div>
+  <footer>
+    <a rel="full-article" href="http://www.yilaguan.cc/posts/2015/12/01/ar-she-zhi-shu-ju-data-fix.html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  		<article>
+<header>
+      <h1 class="entry-title">
+        <a href="http://www.yilaguan.cc/posts/2015/11/30/ding-wei-autoconfigmo-ban-wen-jian.html">定位autoconfig模板文件</a>
       </h1>
     <p class="meta">
 <time datetime="2015-11-30T00:00:00+08:00" pubdate>Mon 30 November 2015</time>    </p>
@@ -85,13 +137,13 @@ forms_web_1012_cfg.tmp文件中的archive2=修改为下面的行：</p>
 <p>添加金税的jar包<br />
   archive2=,/OA_JAVA/hand/hand ...</p></div>
   <footer>
-    <a rel="full-article" href="http://www.yilaguan.cc/ding-wei-autoconfigmo-ban-wen-jian.html">Read On &crarr;</a>
+    <a rel="full-article" href="http://www.yilaguan.cc/posts/2015/11/30/ding-wei-autoconfigmo-ban-wen-jian.html">Read On &crarr;</a>
   </footer>
   		</article>
   		<article>
 <header>
       <h1 class="entry-title">
-        <a href="http://www.yilaguan.cc/shell-bi-jiao.html">shell 比较</a>
+        <a href="http://www.yilaguan.cc/posts/2015/11/30/shell-bi-jiao.html">shell 比较</a>
       </h1>
     <p class="meta">
 <time datetime="2015-11-30T00:00:00+08:00" pubdate>Mon 30 November 2015</time>    </p>
@@ -136,19 +188,24 @@ forms_web_1012_cfg.tmp文件中的archive2=修改为下面的行：</p>
 <td>如果 filename 可读，则为真</td>
 <td>[ -r ...</td></tr></tbody></table></div>
   <footer>
-    <a rel="full-article" href="http://www.yilaguan.cc/shell-bi-jiao.html">Read On &crarr;</a>
+    <a rel="full-article" href="http://www.yilaguan.cc/posts/2015/11/30/shell-bi-jiao.html">Read On &crarr;</a>
   </footer>
   		</article>
   		<article>
 <header>
       <h1 class="entry-title">
-        <a href="http://www.yilaguan.cc/shelljiao-ben-pian-duan.html">shell脚本片段</a>
+        <a href="http://www.yilaguan.cc/posts/2015/11/30/shelljiao-ben-pian-duan.html">shell脚本片段</a>
       </h1>
     <p class="meta">
 <time datetime="2015-11-30T00:00:00+08:00" pubdate>Mon 30 November 2015</time>    </p>
 </header>
 
-  <div class="entry-content"><h2>获取文件行数</h2>
+  <div class="entry-content"><h2>read user enter</h2>
+<div class="highlight"><pre>read -p &quot;Read rows CNT[W]: &quot; ROWS_CNT
+</pre></div>
+
+
+<h2>获取文件行数</h2>
 <div class="highlight"><pre><span class="x">ROW=`wc -l </span><span class="p">$</span><span class="nv">DATA_FILE</span><span class="x"> | awk &#39;</span><span class="err">{</span><span class="x">print </span><span class="p">$</span><span class="x">1}&#39;`</span>
 </pre></div>
 
@@ -179,7 +236,7 @@ done
   		<article>
 <header>
       <h1 class="entry-title">
-        <a href="http://www.yilaguan.cc/nginx-php-fpm.html">Nginx, Php-fpm</a>
+        <a href="http://www.yilaguan.cc/posts/2015/11/26/nginx-php-fpm.html">Nginx, Php-fpm</a>
       </h1>
     <p class="meta">
 <time datetime="2015-11-26T00:00:00+08:00" pubdate>Thu 26 November 2015</time>    </p>
@@ -189,13 +246,13 @@ done
 <div class="highlight"><pre>yum install libxml2-devel bzip2-devel libcurl-devel libjpeg-devel libpng-devel freetype-devel openssl-devel  
 ./configure --prefix=/usr/local/php-5.6 --with-config-file-path=/usr/local/php-5.6/etc --with-bz2 --with-curl --enable-ftp --enable-sockets --disable-ipv6 --with-gd --with-freetype-dir=/usr/local --enable-gd-native-ttf --with-iconv-dir=/usr/local --enable-mbstring --enable-calendar --with-gettext --with-libxml-dir=/usr/local --with-zlib --with-pdo-mysql=mysqlnd --with-mysqli=mysqlnd --with-mysql=mysqlnd --enable-dom --enable-xml ...</pre></div></div>
   <footer>
-    <a rel="full-article" href="http://www.yilaguan.cc/nginx-php-fpm.html">Read On &crarr;</a>
+    <a rel="full-article" href="http://www.yilaguan.cc/posts/2015/11/26/nginx-php-fpm.html">Read On &crarr;</a>
   </footer>
   		</article>
   		<article>
 <header>
       <h1 class="entry-title">
-        <a href="http://www.yilaguan.cc/zhong-gou-_gai-shan-ji-you-dai-ma-de-she-ji.html">重构_改善既有代码的设计</a>
+        <a href="http://www.yilaguan.cc/posts/2015/11/24/zhong-gou-_gai-shan-ji-you-dai-ma-de-she-ji.html">重构_改善既有代码的设计</a>
       </h1>
     <p class="meta">
 <time datetime="2015-11-24T00:00:00+08:00" pubdate>Tue 24 November 2015</time>    </p>
@@ -229,13 +286,13 @@ done
 <ul>
 <li>改进软件设计， 软件结构会流失 ...</li></ul></li></ul></div>
   <footer>
-    <a rel="full-article" href="http://www.yilaguan.cc/zhong-gou-_gai-shan-ji-you-dai-ma-de-she-ji.html">Read On &crarr;</a>
+    <a rel="full-article" href="http://www.yilaguan.cc/posts/2015/11/24/zhong-gou-_gai-shan-ji-you-dai-ma-de-she-ji.html">Read On &crarr;</a>
   </footer>
   		</article>
   		<article>
 <header>
       <h1 class="entry-title">
-        <a href="http://www.yilaguan.cc/iptables-xiao-jie.html">iptables 小结</a>
+        <a href="http://www.yilaguan.cc/posts/2015/11/18/iptables-xiao-jie.html">iptables 小结</a>
       </h1>
     <p class="meta">
 <time datetime="2015-11-18T00:00:00+08:00" pubdate>Wed 18 November 2015</time>    </p>
@@ -261,13 +318,13 @@ nat<br />
 
 <p>使用iptables-save 可以看到更有价值的信息，这部分内容也可以直接作为 ...</p></div>
   <footer>
-    <a rel="full-article" href="http://www.yilaguan.cc/iptables-xiao-jie.html">Read On &crarr;</a>
+    <a rel="full-article" href="http://www.yilaguan.cc/posts/2015/11/18/iptables-xiao-jie.html">Read On &crarr;</a>
   </footer>
   		</article>
   		<article>
 <header>
       <h1 class="entry-title">
-        <a href="http://www.yilaguan.cc/cache.html">Cache</a>
+        <a href="http://www.yilaguan.cc/posts/2015/11/16/cache.html">Cache</a>
       </h1>
     <p class="meta">
 <time datetime="2015-11-16T00:00:00+08:00" pubdate>Mon 16 November 2015</time>    </p>
@@ -283,67 +340,13 @@ nat<br />
 <span class="cp">#</span>
 <span class="cp">#    2. Redistributions in ...</span></pre></div></div>
   <footer>
-    <a rel="full-article" href="http://www.yilaguan.cc/cache.html">Read On &crarr;</a>
+    <a rel="full-article" href="http://www.yilaguan.cc/posts/2015/11/16/cache.html">Read On &crarr;</a>
   </footer>
   		</article>
   		<article>
 <header>
       <h1 class="entry-title">
-        <a href="http://www.yilaguan.cc/pai-xu-suan-fa.html">排序算法</a>
-      </h1>
-    <p class="meta">
-<time datetime="2015-11-16T00:00:00+08:00" pubdate>Mon 16 November 2015</time>    </p>
-</header>
-
-  <div class="entry-content"><h2>优先队列</h2>
-<p>一句话：</p>
-<h2>堆排序</h2>
-<p>时间复杂度： 2NlogN
-一句话： 对</p>
-<p>主要的优点在于能够同时最优使用空间，时间，最坏情况下是2NLOGN<br />
-缺点在于不能很好利用缓冲，因为他的比较是跳跃的，而不是与周围的数据进行比较</p>
-<p>堆这种数据结构还是主要用于优先队列中，每次只需要加载部分数据进入内存，就可以完成大数据量的处理，比如TOP10， 只需要维护一个10元素的数组，然后增量的处理数据就可以了。</p></div>
-  		</article>
-  		<article>
-<header>
-      <h1 class="entry-title">
-        <a href="http://www.yilaguan.cc/pai-xu-suan-fa-pythonshi-xian.html">排序算法python实现</a>
-      </h1>
-    <p class="meta">
-<time datetime="2015-11-16T00:00:00+08:00" pubdate>Mon 16 November 2015</time>    </p>
-</header>
-
-  <div class="entry-content"><h2>Code</h2>
-<p>SelectSort 选择排序<br />
-InsertionSort, InsertionSort 插入排序<br />
-ShellSort, ShellSort2 希尔排序<br />
-HeapSort 堆排序  </p>
-<div class="highlight"><pre><span class="sd">&#39;&#39;&#39;sort base class&#39;&#39;&#39;</span>
-<span class="kn">import</span> <span class="nn">random</span>
-<span class="kn">import</span> <span class="nn">time</span>
-
-<span class="n">LIST_A</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
-<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10000</span><span class="p">):</span>
-    <span class="n">LIST_A</span><span class="o">.</span><span class="kp">append</span><span class="p">(</span><span class="n">random</span><span class="o">.</span><span class="kp">randint</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">100</span><span class="p">))</span>
-
-
-<span class="k">class</span> <span class="nc">TimeIt</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">pass</span>
-
-    <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fn</span><span class="p">):</span>
-        <span class="k">def</span> <span class="nf">wrapped</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-            <span class="n">begin</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
-            <span class="n">fn ...</span></pre></div></div>
-  <footer>
-    <a rel="full-article" href="http://www.yilaguan.cc/pai-xu-suan-fa-pythonshi-xian.html">Read On &crarr;</a>
-  </footer>
-  		</article>
-  		<article>
-<header>
-      <h1 class="entry-title">
-        <a href="http://www.yilaguan.cc/you-xian-dui-lie-pythonshi-xian.html">优先队列Python实现</a>
+        <a href="http://www.yilaguan.cc/posts/2015/11/16/priority_queue.html">优先队列Python实现</a>
       </h1>
     <p class="meta">
 <time datetime="2015-11-16T00:00:00+08:00" pubdate>Mon 16 November 2015</time>    </p>
@@ -401,7 +404,7 @@ HeapSort 堆排序  </p>
 
     <span class="k">def</span> <span class="nf">isEmpty ...</span></pre></div></div>
   <footer>
-    <a rel="full-article" href="http://www.yilaguan.cc/you-xian-dui-lie-pythonshi-xian.html">Read On &crarr;</a>
+    <a rel="full-article" href="http://www.yilaguan.cc/posts/2015/11/16/priority_queue.html">Read On &crarr;</a>
   </footer>
   		</article>
 <div class="pagination">
@@ -414,19 +417,19 @@ HeapSort 堆排序  </p>
     <h1>Recent Posts</h1>
     <ul id="recent_posts">
       <li class="post">
-          <a href="http://www.yilaguan.cc/ding-wei-autoconfigmo-ban-wen-jian.html">定位autoconfig模板文件</a>
+          <a href="http://www.yilaguan.cc/posts/2015/12/02/li-yong-nginx-zhuan-fa-ebs.html">利用nginx 转发 EBS</a>
       </li>
       <li class="post">
-          <a href="http://www.yilaguan.cc/shell-bi-jiao.html">shell 比较</a>
+          <a href="http://www.yilaguan.cc/posts/2015/12/01/ar-she-zhi-shu-ju-data-fix.html">AR 设置数据data fix</a>
       </li>
       <li class="post">
-          <a href="http://www.yilaguan.cc/shelljiao-ben-pian-duan.html">shell脚本片段</a>
+          <a href="http://www.yilaguan.cc/posts/2015/11/30/ding-wei-autoconfigmo-ban-wen-jian.html">定位autoconfig模板文件</a>
       </li>
       <li class="post">
-          <a href="http://www.yilaguan.cc/nginx-php-fpm.html">Nginx, Php-fpm</a>
+          <a href="http://www.yilaguan.cc/posts/2015/11/30/shell-bi-jiao.html">shell 比较</a>
       </li>
       <li class="post">
-          <a href="http://www.yilaguan.cc/zhong-gou-_gai-shan-ji-you-dai-ma-de-she-ji.html">重构_改善既有代码的设计</a>
+          <a href="http://www.yilaguan.cc/posts/2015/11/30/shelljiao-ben-pian-duan.html">shell脚本片段</a>
       </li>
     </ul>
   </section>
@@ -447,7 +450,7 @@ HeapSort 堆排序  </p>
 
   <section>
   <h1>Tags</h1>
-    <a href="http://www.yilaguan.cc/tag/sort.html">sort</a>,    <a href="http://www.yilaguan.cc/tag/linux.html">linux</a>,    <a href="http://www.yilaguan.cc/tag/kibana.html">Kibana</a>,    <a href="http://www.yilaguan.cc/tag/ebs.html">ebs</a>,    <a href="http://www.yilaguan.cc/tag/java.html">Java</a>,    <a href="http://www.yilaguan.cc/tag/log.html">Log</a>,    <a href="http://www.yilaguan.cc/tag/cache.html">Cache</a>,    <a href="http://www.yilaguan.cc/tag/excel.html">Excel</a>,    <a href="http://www.yilaguan.cc/tag/adf.html">ADF</a>,    <a href="http://www.yilaguan.cc/tag/glassfish.html">glassfish</a>,    <a href="http://www.yilaguan.cc/tag/elasticsearch.html">elasticsearch</a>,    <a href="http://www.yilaguan.cc/tag/reading.html">Reading</a>,    <a href="http://www.yilaguan.cc/tag/iptables.html">iptables</a>,    <a href="http://www.yilaguan.cc/tag/shell.html">shell</a>,    <a href="http://www.yilaguan.cc/tag/plsql.html">PLSQL</a>,    <a href="http://www.yilaguan.cc/tag/python.html">Python</a>,    <a href="http://www.yilaguan.cc/tag/docs.html">Docs</a>,    <a href="http://www.yilaguan.cc/tag/matplotlib.html">matplotlib</a>,    <a href="http://www.yilaguan.cc/tag/refactoring.html">Refactoring</a>,    <a href="http://www.yilaguan.cc/tag/logstash.html">logstash</a>,    <a href="http://www.yilaguan.cc/tag/audit.html">Audit</a>,    <a href="http://www.yilaguan.cc/tag/queue.html">queue</a>,    <a href="http://www.yilaguan.cc/tag/algorithms.html">Algorithms</a>,    <a href="http://www.yilaguan.cc/tag/oracle.html">Oracle</a>  </section>
+    <a href="http://www.yilaguan.cc/tag/sort.html">sort</a>,    <a href="http://www.yilaguan.cc/tag/linux.html">linux</a>,    <a href="http://www.yilaguan.cc/tag/kibana.html">Kibana</a>,    <a href="http://www.yilaguan.cc/tag/ebs.html">ebs</a>,    <a href="http://www.yilaguan.cc/tag/java.html">Java</a>,    <a href="http://www.yilaguan.cc/tag/log.html">Log</a>,    <a href="http://www.yilaguan.cc/tag/cache.html">Cache</a>,    <a href="http://www.yilaguan.cc/tag/excel.html">Excel</a>,    <a href="http://www.yilaguan.cc/tag/adf.html">ADF</a>,    <a href="http://www.yilaguan.cc/tag/glassfish.html">glassfish</a>,    <a href="http://www.yilaguan.cc/tag/elasticsearch.html">elasticsearch</a>,    <a href="http://www.yilaguan.cc/tag/reading.html">Reading</a>,    <a href="http://www.yilaguan.cc/tag/iptables.html">iptables</a>,    <a href="http://www.yilaguan.cc/tag/shell.html">shell</a>,    <a href="http://www.yilaguan.cc/tag/plsql.html">PLSQL</a>,    <a href="http://www.yilaguan.cc/tag/python.html">Python</a>,    <a href="http://www.yilaguan.cc/tag/docs.html">Docs</a>,    <a href="http://www.yilaguan.cc/tag/matplotlib.html">matplotlib</a>,    <a href="http://www.yilaguan.cc/tag/refactoring.html">Refactoring</a>,    <a href="http://www.yilaguan.cc/tag/logstash.html">logstash</a>,    <a href="http://www.yilaguan.cc/tag/audit.html">Audit</a>,    <a href="http://www.yilaguan.cc/tag/nginx.html">nginx</a>,    <a href="http://www.yilaguan.cc/tag/queue.html">queue</a>,    <a href="http://www.yilaguan.cc/tag/algorithms.html">Algorithms</a>,    <a href="http://www.yilaguan.cc/tag/oracle.html">Oracle</a>  </section>
 
 
 
@@ -481,6 +484,15 @@ HeapSort 堆排序  </p>
         <h1>Social</h1>
         <ul>
             <li><a href="http://cooleasyhan.github.io" target="_blank">github 个人页</a></li>
+        </ul>
+    </section>
+    <section>
+        <h1>Blogroll</h1>
+        <ul>
+            <li><a href="https://rhettinger.wordpress.com/" target="_blank">rhettinger</a></li>
+            <li><a href="http://www.dongwm.com/" target="_blank">小明明</a></li>
+            <li><a href="http://www.keakon.net/" target="_blank">keakon的涂鸦馆</a></li>
+            <li><a href="http://zheng-ji.info/" target="_blank">织网</a></li>
         </ul>
     </section>
 

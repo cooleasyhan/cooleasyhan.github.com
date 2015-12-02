@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>发布ADF Essentials 至Glassfish &mdash; Yi's Blog  -  Do. Or do not. There is no try</title>
+  <meta name="author" content="YiHan">
+
+
+
+
+
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+    <link href="http://www.yilaguan.cc/favicon.png" rel="icon">
+
+  <link href="http://www.yilaguan.cc/theme/css/main.css" media="screen, projection"
+        rel="stylesheet" type="text/css">
+
+  <link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic"
+        rel="stylesheet" type="text/css">
+  <link href="//fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic"
+        rel="stylesheet" type="text/css">
+</head>
+
+<body>
+  <header role="banner"><hgroup>
+  <h1><a href="http://www.yilaguan.cc/">Yi's Blog  -  Do. Or do not. There is no try</a></h1>
+</hgroup></header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+</ul>
+
+
+<ul class="main-navigation">
+    <li><a href="/">Home</a></li>
+    <li><a href="/archives.html">Archives</a></li>
+      <li >
+        <a href="http://www.yilaguan.cc/category/algorithms.html">Algorithms</a>
+      </li>
+      <li >
+        <a href="http://www.yilaguan.cc/category/documents.html">Documents</a>
+      </li>
+      <li class="active">
+        <a href="http://www.yilaguan.cc/category/ebs.html">Ebs</a>
+      </li>
+      <li >
+        <a href="http://www.yilaguan.cc/category/java.html">Java</a>
+      </li>
+      <li >
+        <a href="http://www.yilaguan.cc/category/linux.html">Linux</a>
+      </li>
+      <li >
+        <a href="http://www.yilaguan.cc/category/python.html">Python</a>
+      </li>
+      <li >
+        <a href="http://www.yilaguan.cc/category/reading.html">Reading</a>
+      </li>
+</ul></nav>
+  <div id="main">
+    <div id="content">
+<div>
+  <article class="hentry" role="article">
+<header>
+      <h1 class="entry-title">发布ADF Essentials 至Glassfish</h1>
+    <p class="meta">
+<time datetime="2015-10-29T00:00:00+08:00" pubdate>Thu 29 October 2015</time>    </p>
+</header>
+
+  <div class="entry-content"><h2>软件安装</h2>
+<h3>JAVA</h3>
+<div class="highlight"><pre><span class="x">JAVA_HOME=/home/yihan/glassfish/jdk1.8.0_65</span>
+<span class="x">export PATH=</span><span class="p">$</span><span class="nv">JAVA_HOME</span><span class="x">/bin:</span><span class="p">$</span><span class="nv">PATH</span><span class="x"></span>
+</pre></div>
+
+
+<h3>Glassfish</h3>
+<ul>
+<li>Oracle GlassFish Sever is commercially supported version of GlassFish v3. It is recommended for production environments. 
+Below is V4  </li>
+<li>下载: https://glassfish.java.net/download.html</li>
+<li>unzip glassfish-4.1.1*zip</li>
+<li>glassfish4/bin/asadmin start-domain</li>
+</ul>
+<h3>ADF Essentials</h3>
+<ul>
+<li>下载： http://www.oracle.com/technetwork/developer-tools/adf/downloads/index.html<ul>
+<li>Oracle ADF Essentials</li>
+<li>Oracle ADF Faces Components Demo</li>
+</ul>
+</li>
+<li>复制到domain目录下的lib目录：/home/yihan/glassfish/glassfish4/glassfish/domains/domain1/lib</li>
+<li>unzip <strong>-j</strong> adf_essentials.zip</li>
+</ul>
+<h2>配置Glassfish</h2>
+<h3>更改端口号</h3>
+<ul>
+<li>/home/yihan/glassfish/glassfish4/glassfish/domains/domain1/config/domain.xml</li>
+</ul>
+<div class="highlight"><pre><span class="nt">&lt;network-listener</span> <span class="na">protocol=</span><span class="s">&quot;http-listener-1&quot;</span> <span class="na">port=</span><span class="s">&quot;8080&quot;</span> <span class="na">name=</span><span class="s">&quot;http-listener-1&quot;</span> <span class="na">thread-pool=</span><span class="s">&quot;http-thread-pool&quot;</span> <span class="na">transport=</span><span class="s">&quot;tcp&quot;</span><span class="nt">&gt;&lt;/network-listener&gt;</span>
+          <span class="nt">&lt;network-listener</span> <span class="na">protocol=</span><span class="s">&quot;http-listener-2&quot;</span> <span class="na">port=</span><span class="s">&quot;8181&quot;</span> <span class="na">name=</span><span class="s">&quot;http-listener-2&quot;</span> <span class="na">thread-pool=</span><span class="s">&quot;http-thread-pool&quot;</span> <span class="na">transport=</span><span class="s">&quot;tcp&quot;</span><span class="nt">&gt;&lt;/network-listener&gt;</span>
+          <span class="nt">&lt;network-listener</span> <span class="na">protocol=</span><span class="s">&quot;pu-protocol&quot;</span> <span class="na">port=</span><span class="s">&quot;4848&quot;</span> <span class="na">name=</span><span class="s">&quot;admin-listener&quot;</span> <span class="na">thread-pool=</span><span class="s">&quot;admin-thread-pool&quot;</span> <span class="na">transport=</span><span class="s">&quot;tcp&quot;</span><span class="nt">&gt;&lt;/network-listener&gt;</span>
+</pre></div>
+
+
+<p>、</p>
+<h3>允许远程登陆</h3>
+<p><code>./asadmin --host localhost --port 4848 enable-secure-admin</code></p>
+<h3>配置参数</h3>
+<ul>
+<li>url: http://localhost:4848 or https://localhost:54848<ul>
+<li>Go to Configurations-&gt;Server-config-&gt;JVM Settings and choose the JVM Options tab</li>
+<li>Add the following entries:</li>
+<li>-XX:MaxPermSize=512m (note this entry should already exist so just make sure it has a big enough value)</li>
+<li>-Doracle.mds.cache=simple</li>
+</ul>
+</li>
+</ul>
+<h3>重启</h3>
+<ul>
+<li>./asadmin restart-domain</li>
+</ul>
+<h2>配置数据库</h2>
+<h3>添加连接池</h3>
+<div class="highlight"><pre><span class="o">./</span><span class="nt">asadmin</span> <span class="nt">--host</span> <span class="nt">localhost</span> <span class="nt">--port</span> <span class="nt">54848</span> <span class="nt">create-jdbc-connection-pool</span> <span class="nt">--datasourceclassname</span> <span class="nt">oracle</span><span class="nc">.jdbc.xa.client.OracleXADataSource</span> <span class="nt">--restype</span> <span class="nt">javax</span><span class="nc">.sql.XADataSource</span> <span class="nt">--property</span> <span class="nt">portNumber</span><span class="o">=</span><span class="nt">1530</span><span class="nd">:password</span><span class="o">=</span><span class="nt">APPS</span><span class="nd">:user</span><span class="o">=</span><span class="nt">APPS</span><span class="nd">:serverName</span><span class="o">=</span><span class="nt">localhost</span><span class="nd">:databaseName</span><span class="o">=</span><span class="nt">DEMO</span><span class="nd">:connectionAttributes</span><span class="o">=</span><span class="err">\</span><span class="o">;</span> <span class="nt">adf_pool</span>
+</pre></div>
+
+
+<h3>添加连接</h3>
+<div class="highlight"><pre>./asadmin --host localhost --port 54848 create-jdbc-resource --connectionpoolid adf_pool jdbc/HRDS
+</pre></div>
+
+
+<h3>重启</h3>
+<h2>添加demo至application</h2>
+<p>Application-&gt;Deploy...-&gt;Choose File-&gt;Type: Web Application-&gt;OK</p>
+<hr />
+<h2>reference documentation</h2>
+<ul>
+<li><a href="https://blogs.oracle.com/shay/entry/deploying_oracle_adf_applications_to">https://blogs.oracle.com/shay/entry/deploying_oracle_adf_applications_to</a></li>
+<li><a href="http://blog-raphaufrj.rhcloud.com/running-adf-essentials-in-tomcat/">http://blog-raphaufrj.rhcloud.com/running-adf-essentials-in-tomcat/</a></li>
+<li><a href="http://docs.oracle.com/cd/E18930_01/html/821-2433/gentextid-110.html#scrolltoc">http://docs.oracle.com/cd/E18930_01/html/821-2433/gentextid-110.html#scrolltoc</a></li>
+</ul></div>
+    <footer>
+<p class="meta">
+  <span class="byline author vcard">
+    Posted by <span class="fn">
+        YiHan
+    </span>
+  </span>
+<time datetime="2015-10-29T00:00:00+08:00" pubdate>Thu 29 October 2015</time>  <span class="categories">
+    <a class='category' href='http://www.yilaguan.cc/category/ebs.html'>ebs</a>
+  </span>
+  <span class="categories">
+    <a class="category" href="http://www.yilaguan.cc/tag/oracle.html">Oracle</a>,    <a class="category" href="http://www.yilaguan.cc/tag/adf.html">ADF</a>,    <a class="category" href="http://www.yilaguan.cc/tag/glassfish.html">glassfish</a>  </span>
+</p><div class="sharing">
+</div>    </footer>
+  </article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript></div>
+  </section>
+</div>
+<aside class="sidebar">
+  <section>
+    <h1>Recent Posts</h1>
+    <ul id="recent_posts">
+      <li class="post">
+          <a href="http://www.yilaguan.cc/posts/2015/12/02/li-yong-nginx-zhuan-fa-ebs.html">利用nginx 转发 EBS</a>
+      </li>
+      <li class="post">
+          <a href="http://www.yilaguan.cc/posts/2015/12/01/ar-she-zhi-shu-ju-data-fix.html">AR 设置数据data fix</a>
+      </li>
+      <li class="post">
+          <a href="http://www.yilaguan.cc/posts/2015/11/30/ding-wei-autoconfigmo-ban-wen-jian.html">定位autoconfig模板文件</a>
+      </li>
+      <li class="post">
+          <a href="http://www.yilaguan.cc/posts/2015/11/30/shell-bi-jiao.html">shell 比较</a>
+      </li>
+      <li class="post">
+          <a href="http://www.yilaguan.cc/posts/2015/11/30/shelljiao-ben-pian-duan.html">shell脚本片段</a>
+      </li>
+    </ul>
+  </section>
+  <section>
+      
+    <h1>Categories</h1>
+    <ul id="recent_posts">
+        <li><a href="http://www.yilaguan.cc/category/algorithms.html">Algorithms</a></li>
+        <li><a href="http://www.yilaguan.cc/category/documents.html">Documents</a></li>
+        <li><a href="http://www.yilaguan.cc/category/ebs.html">ebs</a></li>
+        <li><a href="http://www.yilaguan.cc/category/java.html">java</a></li>
+        <li><a href="http://www.yilaguan.cc/category/linux.html">linux</a></li>
+        <li><a href="http://www.yilaguan.cc/category/python.html">python</a></li>
+        <li><a href="http://www.yilaguan.cc/category/reading.html">Reading</a></li>
+    </ul>
+  </section>
+ 
+
+  <section>
+  <h1>Tags</h1>
+    <a href="http://www.yilaguan.cc/tag/sort.html">sort</a>,    <a href="http://www.yilaguan.cc/tag/linux.html">linux</a>,    <a href="http://www.yilaguan.cc/tag/kibana.html">Kibana</a>,    <a href="http://www.yilaguan.cc/tag/ebs.html">ebs</a>,    <a href="http://www.yilaguan.cc/tag/java.html">Java</a>,    <a href="http://www.yilaguan.cc/tag/log.html">Log</a>,    <a href="http://www.yilaguan.cc/tag/cache.html">Cache</a>,    <a href="http://www.yilaguan.cc/tag/excel.html">Excel</a>,    <a href="http://www.yilaguan.cc/tag/adf.html">ADF</a>,    <a href="http://www.yilaguan.cc/tag/glassfish.html">glassfish</a>,    <a href="http://www.yilaguan.cc/tag/elasticsearch.html">elasticsearch</a>,    <a href="http://www.yilaguan.cc/tag/reading.html">Reading</a>,    <a href="http://www.yilaguan.cc/tag/iptables.html">iptables</a>,    <a href="http://www.yilaguan.cc/tag/shell.html">shell</a>,    <a href="http://www.yilaguan.cc/tag/plsql.html">PLSQL</a>,    <a href="http://www.yilaguan.cc/tag/python.html">Python</a>,    <a href="http://www.yilaguan.cc/tag/docs.html">Docs</a>,    <a href="http://www.yilaguan.cc/tag/matplotlib.html">matplotlib</a>,    <a href="http://www.yilaguan.cc/tag/refactoring.html">Refactoring</a>,    <a href="http://www.yilaguan.cc/tag/logstash.html">logstash</a>,    <a href="http://www.yilaguan.cc/tag/audit.html">Audit</a>,    <a href="http://www.yilaguan.cc/tag/nginx.html">nginx</a>,    <a href="http://www.yilaguan.cc/tag/queue.html">queue</a>,    <a href="http://www.yilaguan.cc/tag/algorithms.html">Algorithms</a>,    <a href="http://www.yilaguan.cc/tag/oracle.html">Oracle</a>  </section>
+
+
+
+  <section>
+    <h1>GitHub Repos</h1>
+    <ul id="gh_repos">
+      <li class="loading">Status updating...</li>
+    </ul>
+    <script type="text/javascript">
+      $.domReady(function(){
+          if (!window.jXHR){
+              var jxhr = document.createElement('script');
+              jxhr.type = 'text/javascript';
+              jxhr.src = 'http://www.yilaguan.cc/theme/js/jXHR.js';
+              var s = document.getElementsByTagName('script')[0];
+              s.parentNode.insertBefore(jxhr, s);
+          }
+
+          github.showRepos({
+              user: 'cooleasyhan',
+              count: 5,
+              skip_forks: false,
+              target: '#gh_repos'
+          });
+      });
+    </script>
+    <script src="http://www.yilaguan.cc/theme/js/github.js" type="text/javascript"> </script>
+  </section>
+
+    <section>
+        <h1>Social</h1>
+        <ul>
+            <li><a href="http://cooleasyhan.github.io" target="_blank">github 个人页</a></li>
+        </ul>
+    </section>
+    <section>
+        <h1>Blogroll</h1>
+        <ul>
+            <li><a href="https://rhettinger.wordpress.com/" target="_blank">rhettinger</a></li>
+            <li><a href="http://www.dongwm.com/" target="_blank">小明明</a></li>
+            <li><a href="http://www.keakon.net/" target="_blank">keakon的涂鸦馆</a></li>
+            <li><a href="http://zheng-ji.info/" target="_blank">织网</a></li>
+        </ul>
+    </section>
+
+</aside>    </div>
+  </div>
+  <footer role="contentinfo"><p>
+    Copyright &copy;  2015  YiHan &mdash;
+  <span class="credit">Powered by <a href="http://getpelican.com">Pelican</a></span>
+<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1256794788'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s95.cnzz.com/z_stat.php%3Fid%3D1256794788%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>
+</p>
+</footer>
+  <script src="http://www.yilaguan.cc/theme/js/modernizr-2.0.js"></script>
+  <script src="http://www.yilaguan.cc/theme/js/ender.js"></script>
+  <script src="http://www.yilaguan.cc/theme/js/octopress.js" type="text/javascript"></script>
+  <script type="text/javascript">
+    var disqus_shortname = 'yilaguan';
+    var disqus_identifier = '/posts/2015/10/29/adf_to_glassfish.html';
+    var disqus_url = 'http://www.yilaguan.cc/posts/2015/10/29/adf_to_glassfish.html';
+    var disqus_title = '发布ADF Essentials 至Glassfish';
+    (function() {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = "//" + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+     })();
+  </script>
+</body>
+</html>
