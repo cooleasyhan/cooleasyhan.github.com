@@ -3,22 +3,28 @@
 <head>
         <meta charset="utf-8" />
         <meta name="generator" content="Pelican" />
-        <title>Thinking - Yi Han</title>
+        <title>DRF Best Practices01: DynamicFieldsModelSerializer</title>
         <link rel="stylesheet" href="https://cooleasyhan.github.io/theme/css/main.css" />
         <link href="https://cooleasyhan.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Thinking Atom Feed" />
+        <meta name="description" content="class DynamicFieldsModelSerializer(serializers.ModelSerializer): """ A ModelSerializer that takes an additional `fields` argument that controls..." />
 </head>
 
 <body id="index" class="home">
         <header id="banner" class="body">
                 <h1><a href="https://cooleasyhan.github.io/">Thinking</a></h1>
                 <nav><ul>
-                    <li><a href="https://cooleasyhan.github.io/category/drf.html">DRF</a></li>
+                    <li class="active"><a href="https://cooleasyhan.github.io/category/drf.html">DRF</a></li>
                 </ul></nav>
         </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="https://cooleasyhan.github.io/bp01_DynamicFieldsModelSerializer.html" rel="bookmark"
+           title="Permalink to DRF Best Practices01: DynamicFieldsModelSerializer">DRF Best Practices01: DynamicFieldsModelSerializer</a></h1>
+    </header>
 
-            <aside id="featured" class="body">
-                <article>
-                    <h1 class="entry-title"><a href="https://cooleasyhan.github.io/bp01_DynamicFieldsModelSerializer.html">DRF Best Practices01: DynamicFieldsModelSerializer</a></h1>
+    <div class="entry-content">
 <footer class="post-info">
         <abbr class="published" title="2020-12-04T00:00:00+08:00">
                 Published: 五 04 十二月 2020
@@ -29,7 +35,7 @@
         </address>
 <p>In <a href="https://cooleasyhan.github.io/category/drf.html">DRF</a>.</p>
 <p>tags: <a href="https://cooleasyhan.github.io/tag/drf.html">DRF</a> <a href="https://cooleasyhan.github.io/tag/django.html">Django</a> <a href="https://cooleasyhan.github.io/tag/python.html">Python</a> </p>
-</footer><!-- /.post-info --><div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">DynamicFieldsModelSerializer</span><span class="p">(</span><span class="n">serializers</span><span class="o">.</span><span class="n">ModelSerializer</span><span class="p">):</span>
+</footer><!-- /.post-info -->      <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">DynamicFieldsModelSerializer</span><span class="p">(</span><span class="n">serializers</span><span class="o">.</span><span class="n">ModelSerializer</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A ModelSerializer that takes an additional `fields` argument that</span>
 <span class="sd">    controls which fields should be displayed.</span>
@@ -97,8 +103,11 @@
 
         <span class="k">if</span> <span class="n">_exclude_fields</span><span class="p">:</span>
             <span class="n">_delete_fields</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fields</span><span class="p">,</span> <span class="n">_exclude_fields</span><span class="p">)</span>
-</code></pre></div>                </article>
-            </aside><!-- /#featured -->
+</code></pre></div>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
         <section id="extras" class="body">
                 <div class="blogroll">
                         <h2>links</h2>
