@@ -30,14 +30,14 @@
 <p>In <a href="https://cooleasyhan.github.io/category/drf.html">DRF</a>.</p>
 <p>tags: <a href="https://cooleasyhan.github.io/tag/drf.html">DRF</a> <a href="https://cooleasyhan.github.io/tag/django.html">Django</a> <a href="https://cooleasyhan.github.io/tag/python.html">Python</a> </p>
 </footer><!-- /.post-info --><p>DRF Serializer 容易由于字段过多，表间级联查询过多，造成性能较差，可以通过动态选择字段极大提升性能</p>
-<h3>场景</h3>
+<h2>场景</h2>
 <p>list 需要的字段少于 retrive 字段</p>
 <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">X</span><span class="p">(</span><span class="n">ModelViewSet</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="n">queryset</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">filter_queryset</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_queryset</span><span class="p">())</span>
 
         <span class="n">page</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">paginate_queryset</span><span class="p">(</span><span class="n">queryset</span><span class="p">)</span>
-        <span class="n">exclude_fields</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;field1&quot;</span><span class="p">,</span> <span class="s2">&quot;field2&quot;</span><span class="p">,</span> <span class="s2">&quot;fk_obj__field3&quot;</span> <span class="p">]</span> 
+        <span class="n">exclude_fields</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;field1&quot;</span><span class="p">,</span> <span class="s2">&quot;field2&quot;</span><span class="p">,</span> <span class="s2">&quot;fk_obj__field3&quot;</span> <span class="p">]</span>
         <span class="k">if</span> <span class="n">page</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">serializer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_serializer</span><span class="p">(</span>
                 <span class="n">page</span><span class="p">,</span> <span class="n">many</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exclude_fields</span><span class="o">=</span><span class="n">exclude_fields</span>
@@ -122,12 +122,60 @@
 </code></pre></div>
 
 
-<h3>Links</h3>
+<h2>reference</h2>
 <ul>
 <li>https://stackoverflow.com/questions/54893891/django-rest-framework-using-dynamicfieldsmodelserializer-for-excluding-serializ</li>
 <li>https://www.django-rest-framework.org/api-guide/serializers/#dynamically-modifying-fields</li>
 </ul>                </article>
             </aside><!-- /#featured -->
+                <section id="content" class="body">
+                    <h1>Other articles</h1>
+                    <hr />
+                    <ol id="posts-list" class="hfeed">
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://cooleasyhan.github.io/bp02_DRFActionPermission.html" rel="bookmark"
+                           title="Permalink to DRF Best Practices01: DynamicFieldsModelSerializer">DRF Best Practices01: DynamicFieldsModelSerializer</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2020-12-04T00:00:00+08:00">
+                Published: 五 04 十二月 2020
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://cooleasyhan.github.io/author/yi-han.html">Yi Han</a>
+        </address>
+<p>In <a href="https://cooleasyhan.github.io/category/drf.html">DRF</a>.</p>
+<p>tags: <a href="https://cooleasyhan.github.io/tag/drf.html">DRF</a> <a href="https://cooleasyhan.github.io/tag/django.html">Django</a> <a href="https://cooleasyhan.github.io/tag/python.html">Python</a> </p>
+</footer><!-- /.post-info -->                <p>DRF 默认权限设定无法对每个接口进行明细的权限设定， 对其增加DrfActionPermission， 利用ViewSet action，为所有接口设定权限。</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># settings.py</span>
+<span class="n">REST_FRAMEWORK</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;DEFAULT_PERMISSION_CLASSES&quot;</span><span class="p">:</span> <span class="p">(</span>
+        <span class="s2">&quot;rest_framework.permissions.IsAuthenticated&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;XXX.contrib.drf.permissions.DrfActionPermission&quot;</span>
+    <span class="p">)</span>
+<span class="p">}</span>
+
+<span class="c1"># 非ModelViewSet 类，是否放行</span>
+<span class="n">REST_DRF_ACTION_PERMISSION_DEFAULT</span> <span class="o">=</span> <span class="kc">False</span>
+</code></pre></div>
+
+
+<div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">DrfActionPermission</span><span class="p">(</span><span class="n">permissions</span><span class="o">.</span><span class="n">BasePermission</span><span class="p">):</span>
+    <span class="n">authenticated_users_only</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="n">action_perms_map</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;GET&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;</span><span class="si">%(app_label)s</span><span class="s2">.action_get_</span><span class="si">%(model_name)s</span><span class="s2">__</span><span class="si">%(action_name)s</span><span class="s2">&quot;</span><span class="p">],</span>
+        <span class="s2">&quot;OPTIONS&quot;</span><span class="p">:</span> <span class="p">[],</span>
+        <span class="s2">&quot;HEAD&quot;</span><span class="p">:</span> <span class="p">[],</span>
+        <span class="s2">&quot;POST&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;</span><span class="si">%(app_label)s</span><span class="s2">.action_post_</span><span class="si">%(model_name)s</span><span class="s2">__</span><span class="si">%(action_name)s …</span></code></pre></div>
+                <a class="readmore" href="https://cooleasyhan.github.io/bp02_DRFActionPermission.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+                </ol><!-- /#posts-list -->
+                </section><!-- /#content -->
         <section id="extras" class="body">
                 <div class="blogroll">
                         <h2>links</h2>

@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+        <meta charset="utf-8" />
+        <meta name="generator" content="Pelican" />
+        <title>DRF Best Practices01: DynamicFieldsModelSerializer</title>
+        <link rel="stylesheet" href="https://cooleasyhan.github.io/theme/css/main.css" />
+        <link href="https://cooleasyhan.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Thinking Atom Feed" />
+        <meta name="description" content="DRF 默认权限设定无法对每个接口进行明细的权限设定， 对其增加DrfActionPermission， 利用ViewSet action，为所有接口设定权限。 # settings.py REST_FRAMEWORK = { "DEFAULT_PERMISSION_CLASSES": (..." />
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="https://cooleasyhan.github.io/">Thinking</a></h1>
+                <nav><ul>
+                    <li class="active"><a href="https://cooleasyhan.github.io/category/drf.html">DRF</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="https://cooleasyhan.github.io/bp02_DRFActionPermission.html" rel="bookmark"
+           title="Permalink to DRF Best Practices01: DynamicFieldsModelSerializer">DRF Best Practices01: DynamicFieldsModelSerializer</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2020-12-04T00:00:00+08:00">
+                Published: 五 04 十二月 2020
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://cooleasyhan.github.io/author/yi-han.html">Yi Han</a>
+        </address>
+<p>In <a href="https://cooleasyhan.github.io/category/drf.html">DRF</a>.</p>
+<p>tags: <a href="https://cooleasyhan.github.io/tag/drf.html">DRF</a> <a href="https://cooleasyhan.github.io/tag/django.html">Django</a> <a href="https://cooleasyhan.github.io/tag/python.html">Python</a> </p>
+</footer><!-- /.post-info -->      <p>DRF 默认权限设定无法对每个接口进行明细的权限设定， 对其增加DrfActionPermission， 利用ViewSet action，为所有接口设定权限。</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># settings.py</span>
+<span class="n">REST_FRAMEWORK</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;DEFAULT_PERMISSION_CLASSES&quot;</span><span class="p">:</span> <span class="p">(</span>
+        <span class="s2">&quot;rest_framework.permissions.IsAuthenticated&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;XXX.contrib.drf.permissions.DrfActionPermission&quot;</span>
+    <span class="p">)</span>
+<span class="p">}</span>
+
+<span class="c1"># 非ModelViewSet 类，是否放行</span>
+<span class="n">REST_DRF_ACTION_PERMISSION_DEFAULT</span> <span class="o">=</span> <span class="kc">False</span>
+</code></pre></div>
+
+
+<div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">DrfActionPermission</span><span class="p">(</span><span class="n">permissions</span><span class="o">.</span><span class="n">BasePermission</span><span class="p">):</span>
+    <span class="n">authenticated_users_only</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="n">action_perms_map</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;GET&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;</span><span class="si">%(app_label)s</span><span class="s2">.action_get_</span><span class="si">%(model_name)s</span><span class="s2">__</span><span class="si">%(action_name)s</span><span class="s2">&quot;</span><span class="p">],</span>
+        <span class="s2">&quot;OPTIONS&quot;</span><span class="p">:</span> <span class="p">[],</span>
+        <span class="s2">&quot;HEAD&quot;</span><span class="p">:</span> <span class="p">[],</span>
+        <span class="s2">&quot;POST&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;</span><span class="si">%(app_label)s</span><span class="s2">.action_post_</span><span class="si">%(model_name)s</span><span class="s2">__</span><span class="si">%(action_name)s</span><span class="s2">&quot;</span><span class="p">],</span>
+        <span class="s2">&quot;PUT&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;</span><span class="si">%(app_label)s</span><span class="s2">.action_put_</span><span class="si">%(model_name)s</span><span class="s2">__</span><span class="si">%(action_name)s</span><span class="s2">&quot;</span><span class="p">],</span>
+        <span class="s2">&quot;PATCH&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;</span><span class="si">%(app_label)s</span><span class="s2">.action_patch_</span><span class="si">%(model_name)s</span><span class="s2">__</span><span class="si">%(action_name)s</span><span class="s2">&quot;</span><span class="p">],</span>
+        <span class="s2">&quot;DELETE&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;</span><span class="si">%(app_label)s</span><span class="s2">.action_delete_</span><span class="si">%(model_name)s</span><span class="s2">__</span><span class="si">%(action_name)s</span><span class="s2">&quot;</span><span class="p">],</span>
+    <span class="p">}</span>
+
+    <span class="k">def</span> <span class="nf">_queryset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">view</span><span class="p">):</span>
+        <span class="k">assert</span> <span class="p">(</span>
+            <span class="nb">hasattr</span><span class="p">(</span><span class="n">view</span><span class="p">,</span> <span class="s2">&quot;get_queryset&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">view</span><span class="p">,</span> <span class="s2">&quot;queryset&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+        <span class="p">),</span> <span class="p">(</span>
+            <span class="s2">&quot;Cannot apply </span><span class="si">{}</span><span class="s2"> on a view that does not set &quot;</span>
+            <span class="s2">&quot;`.queryset` or have a `.get_queryset()` method.&quot;</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span>
+        <span class="p">)</span>
+
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">view</span><span class="p">,</span> <span class="s2">&quot;get_queryset&quot;</span><span class="p">):</span>
+            <span class="n">queryset</span> <span class="o">=</span> <span class="n">view</span><span class="o">.</span><span class="n">get_queryset</span><span class="p">()</span>
+            <span class="k">assert</span> <span class="n">queryset</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">.get_queryset() returned None&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="n">view</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span>
+            <span class="p">)</span>
+            <span class="k">return</span> <span class="n">queryset</span>
+        <span class="k">return</span> <span class="n">view</span><span class="o">.</span><span class="n">queryset</span>
+
+    <span class="k">def</span> <span class="nf">_get_model_cls</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">view</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">view</span><span class="p">,</span> <span class="s2">&quot;permission_object&quot;</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">view</span><span class="o">.</span><span class="n">permission_object</span>
+        <span class="n">queryset</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_queryset</span><span class="p">(</span><span class="n">view</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">queryset</span><span class="o">.</span><span class="n">model</span>
+
+    <span class="k">def</span> <span class="nf">get_action_required_permissions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">method</span><span class="p">,</span> <span class="n">model_cls</span><span class="p">,</span> <span class="n">action_name</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Given a model and an HTTP method, return the list of permission</span>
+<span class="sd">        codes that the user is required to have.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">kwargs</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;app_label&quot;</span><span class="p">:</span> <span class="n">model_cls</span><span class="o">.</span><span class="n">_meta</span><span class="o">.</span><span class="n">app_label</span><span class="p">,</span>
+            <span class="s2">&quot;model_name&quot;</span><span class="p">:</span> <span class="n">model_cls</span><span class="o">.</span><span class="n">_meta</span><span class="o">.</span><span class="n">model_name</span><span class="p">,</span>
+            <span class="s2">&quot;action_name&quot;</span><span class="p">:</span> <span class="n">action_name</span><span class="p">,</span>
+        <span class="p">}</span>
+
+        <span class="k">if</span> <span class="n">method</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">action_perms_map</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">exceptions</span><span class="o">.</span><span class="n">MethodNotAllowed</span><span class="p">(</span><span class="n">method</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="p">[</span><span class="n">perm</span> <span class="o">%</span> <span class="n">kwargs</span> <span class="k">for</span> <span class="n">perm</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">action_perms_map</span><span class="p">[</span><span class="n">method</span><span class="p">]]</span>
+
+    <span class="k">def</span> <span class="nf">has_action_permission</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">view</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">view</span><span class="p">,</span> <span class="s2">&quot;_ignore_model_permissions&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">):</span>
+            <span class="k">return</span> <span class="kc">True</span>
+
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">view</span><span class="p">,</span> <span class="s2">&quot;action&quot;</span><span class="p">):</span>
+            <span class="k">if</span> <span class="p">(</span>
+                <span class="n">request</span><span class="o">.</span><span class="n">accepted_renderer</span><span class="o">.</span><span class="n">format</span> <span class="o">==</span> <span class="s2">&quot;xlsx&quot;</span>
+                <span class="ow">and</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;get&quot;</span>
+            <span class="p">):</span>
+                <span class="n">action_name</span> <span class="o">=</span> <span class="s2">&quot;export&quot;</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">action_name</span> <span class="o">=</span> <span class="n">view</span><span class="o">.</span><span class="n">action</span>
+
+            <span class="n">model_cls</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_model_cls</span><span class="p">(</span><span class="n">view</span><span class="p">)</span>
+            <span class="n">perms</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_action_required_permissions</span><span class="p">(</span>
+                <span class="n">request</span><span class="o">.</span><span class="n">method</span><span class="p">,</span> <span class="n">model_cls</span><span class="p">,</span> <span class="n">action_name</span>
+            <span class="p">)</span>
+            <span class="k">return</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">has_perms</span><span class="p">(</span><span class="n">perms</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="ne">Warning</span><span class="p">(</span><span class="s2">&quot;Use ViewSet as BaseClass&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">settings</span><span class="o">.</span><span class="n">REST_DRF_ACTION_PERMISSION_DEFAULT</span>
+
+    <span class="k">def</span> <span class="nf">has_permission</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">view</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span> <span class="ow">or</span> <span class="p">(</span>
+            <span class="ow">not</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">is_authenticated</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">authenticated_users_only</span>
+        <span class="p">):</span>
+            <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_action_permission</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">view</span><span class="p">)</span>
+</code></pre></div>
+
+
+<div class="highlight"><pre><span></span><code><span class="c1"># add permission code</span>
+
+<span class="kn">from</span> <span class="nn">importlib</span> <span class="kn">import</span> <span class="n">import_module</span>
+<span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">chain</span>
+
+<span class="kn">from</span> <span class="nn">django.apps</span> <span class="kn">import</span> <span class="n">apps</span>
+<span class="kn">from</span> <span class="nn">django.contrib.auth.models</span> <span class="kn">import</span> <span class="n">Permission</span>
+<span class="kn">from</span> <span class="nn">django.contrib.contenttypes.models</span> <span class="kn">import</span> <span class="n">ContentType</span>
+<span class="kn">from</span> <span class="nn">django.core.management.base</span> <span class="kn">import</span> <span class="n">BaseCommand</span>
+<span class="kn">from</span> <span class="nn">django.utils.module_loading</span> <span class="kn">import</span> <span class="n">module_has_submodule</span>
+<span class="kn">from</span> <span class="nn">rest_framework.viewsets</span> <span class="kn">import</span> <span class="n">ViewSetMixin</span>
+
+<span class="n">detail_action_mapping</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">{</span><span class="s2">&quot;get&quot;</span><span class="p">:</span> <span class="s2">&quot;retrieve&quot;</span><span class="p">,</span> <span class="s2">&quot;put&quot;</span><span class="p">:</span> <span class="s2">&quot;update&quot;</span><span class="p">,</span> <span class="s2">&quot;patch&quot;</span><span class="p">:</span> <span class="s2">&quot;partial_update&quot;</span><span class="p">,</span> <span class="s2">&quot;delete&quot;</span><span class="p">:</span> <span class="s2">&quot;destroy&quot;</span><span class="p">}</span>
+<span class="p">]</span>
+
+<span class="n">list_action_mapping</span> <span class="o">=</span> <span class="p">[{</span><span class="s2">&quot;get&quot;</span><span class="p">:</span> <span class="s2">&quot;list&quot;</span><span class="p">,</span> <span class="s2">&quot;post&quot;</span><span class="p">:</span> <span class="s2">&quot;create&quot;</span><span class="p">}]</span>
+
+<span class="n">export_action_mapping</span> <span class="o">=</span> <span class="p">[{</span><span class="s2">&quot;get&quot;</span><span class="p">:</span> <span class="s2">&quot;export&quot;</span><span class="p">}]</span>
+
+
+<span class="k">class</span> <span class="nc">Command</span><span class="p">(</span><span class="n">BaseCommand</span><span class="p">):</span>
+    <span class="n">help</span> <span class="o">=</span> <span class="s2">&quot;add_action_permission&quot;</span>
+
+    <span class="k">def</span> <span class="nf">_get_moduleviews</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">moduleviews</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">app</span> <span class="ow">in</span> <span class="n">apps</span><span class="o">.</span><span class="n">get_app_configs</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">module_has_submodule</span><span class="p">(</span><span class="n">app</span><span class="o">.</span><span class="n">module</span><span class="p">,</span> <span class="s2">&quot;views&quot;</span><span class="p">):</span>
+                <span class="n">views_module_name</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">.</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">app</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="s2">&quot;views&quot;</span><span class="p">)</span>
+                <span class="n">views_module</span> <span class="o">=</span> <span class="n">import_module</span><span class="p">(</span><span class="n">views_module_name</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">obj_str</span> <span class="ow">in</span> <span class="nb">dir</span><span class="p">(</span><span class="n">views_module</span><span class="p">):</span>
+                    <span class="k">if</span> <span class="n">obj_str</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">):</span>
+                        <span class="k">continue</span>
+                    <span class="k">if</span> <span class="n">obj_str</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;mro&quot;</span><span class="p">,):</span>
+                        <span class="k">continue</span>
+                    <span class="n">obj</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">views_module</span><span class="p">,</span> <span class="n">obj_str</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="nb">type</span><span class="p">):</span>
+                        <span class="k">try</span><span class="p">:</span>
+                            <span class="k">if</span> <span class="n">ViewSetMixin</span> <span class="ow">in</span> <span class="n">obj</span><span class="o">.</span><span class="n">mro</span><span class="p">():</span>
+                                <span class="n">moduleviews</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+                        <span class="k">except</span> <span class="ne">TypeError</span><span class="p">:</span>
+                            <span class="k">pass</span>
+        <span class="k">return</span> <span class="n">moduleviews</span>
+
+    <span class="k">def</span> <span class="nf">_get_model_cls</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">moduleview</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">moduleview</span><span class="p">,</span> <span class="s2">&quot;permission_object&quot;</span><span class="p">):</span>
+            <span class="n">model_cls</span> <span class="o">=</span> <span class="n">moduleview</span><span class="o">.</span><span class="n">permission_object</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">moduleview</span><span class="p">,</span> <span class="s2">&quot;queryset&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">moduleview</span><span class="o">.</span><span class="n">queryset</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">model_cls</span> <span class="o">=</span> <span class="n">moduleview</span><span class="o">.</span><span class="n">queryset</span><span class="o">.</span><span class="n">model</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">write</span><span class="p">(</span>
+                    <span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> no queryset, no permission_object, can not create permission objects auto&quot;</span>
+                    <span class="o">%</span> <span class="n">moduleview</span><span class="o">.</span><span class="vm">__name__</span>
+                <span class="p">)</span>
+                <span class="n">model_cls</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="k">return</span> <span class="n">model_cls</span>
+
+    <span class="k">def</span> <span class="nf">handle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">moduleviews</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_moduleviews</span><span class="p">()</span>
+        <span class="n">permissions</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">moduleview</span> <span class="ow">in</span> <span class="n">moduleviews</span><span class="p">:</span>
+            <span class="n">model_cls</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_model_cls</span><span class="p">(</span><span class="n">moduleview</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">model_cls</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="n">extra_actions</span> <span class="o">=</span> <span class="n">moduleview</span><span class="o">.</span><span class="n">get_extra_actions</span><span class="p">()</span>
+
+            <span class="k">for</span> <span class="n">action</span> <span class="ow">in</span> <span class="n">chain</span><span class="p">(</span>
+                <span class="p">[</span><span class="n">_action</span><span class="o">.</span><span class="n">mapping</span> <span class="k">for</span> <span class="n">_action</span> <span class="ow">in</span> <span class="n">extra_actions</span><span class="p">],</span>
+                <span class="n">detail_action_mapping</span><span class="p">,</span>
+                <span class="n">list_action_mapping</span><span class="p">,</span>
+                <span class="n">export_action_mapping</span><span class="p">,</span>
+            <span class="p">):</span>
+                <span class="k">for</span> <span class="n">method</span><span class="p">,</span> <span class="n">action_name</span> <span class="ow">in</span> <span class="n">action</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                    <span class="n">kwargs</span> <span class="o">=</span> <span class="p">{</span>
+                        <span class="s2">&quot;app_label&quot;</span><span class="p">:</span> <span class="n">model_cls</span><span class="o">.</span><span class="n">_meta</span><span class="o">.</span><span class="n">app_label</span><span class="p">,</span>
+                        <span class="s2">&quot;model_name&quot;</span><span class="p">:</span> <span class="n">model_cls</span><span class="o">.</span><span class="n">_meta</span><span class="o">.</span><span class="n">model_name</span><span class="p">,</span>
+                        <span class="s2">&quot;action_name&quot;</span><span class="p">:</span> <span class="n">action_name</span><span class="p">,</span>
+                        <span class="s2">&quot;method&quot;</span><span class="p">:</span> <span class="n">method</span><span class="p">,</span>
+                    <span class="p">}</span>
+                    <span class="n">permission_name</span> <span class="o">=</span> <span class="p">(</span>
+                        <span class="s2">&quot;action_</span><span class="si">%(method)s</span><span class="s2">_</span><span class="si">%(model_name)s</span><span class="s2">__</span><span class="si">%(action_name)s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">kwargs</span>
+                    <span class="p">)</span>
+                    <span class="n">permissions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                        <span class="p">{</span>
+                            <span class="s2">&quot;app_label&quot;</span><span class="p">:</span> <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;app_label&quot;</span><span class="p">],</span>
+                            <span class="s2">&quot;model_name&quot;</span><span class="p">:</span> <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;model_name&quot;</span><span class="p">],</span>
+                            <span class="s2">&quot;permission_name&quot;</span><span class="p">:</span> <span class="n">permission_name</span><span class="p">,</span>
+                        <span class="p">}</span>
+                    <span class="p">)</span>
+
+            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">moduleview</span><span class="p">,</span> <span class="s2">&quot;extra_permissions&quot;</span><span class="p">):</span>
+                <span class="k">for</span> <span class="n">permission</span> <span class="ow">in</span> <span class="n">moduleview</span><span class="o">.</span><span class="n">extra_permissions</span><span class="p">:</span>
+                    <span class="n">permissions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                        <span class="p">{</span>
+                            <span class="s2">&quot;app_label&quot;</span><span class="p">:</span> <span class="n">model_cls</span><span class="o">.</span><span class="n">_meta</span><span class="o">.</span><span class="n">app_label</span><span class="p">,</span>
+                            <span class="s2">&quot;model_name&quot;</span><span class="p">:</span> <span class="n">model_cls</span><span class="o">.</span><span class="n">_meta</span><span class="o">.</span><span class="n">model_name</span><span class="p">,</span>
+                            <span class="s2">&quot;permission_name&quot;</span><span class="p">:</span> <span class="n">permission</span><span class="p">,</span>
+                        <span class="p">}</span>
+                    <span class="p">)</span>
+
+        <span class="k">def</span> <span class="nf">get_permission_name</span><span class="p">(</span><span class="n">permission_code</span><span class="p">):</span>
+            <span class="n">name_mapping</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="s2">&quot;retrieve&quot;</span><span class="p">:</span> <span class="s2">&quot;查询明细&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;update&quot;</span><span class="p">:</span> <span class="s2">&quot;修改&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;partial_update&quot;</span><span class="p">:</span> <span class="s2">&quot;部分修改&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;destroy&quot;</span><span class="p">:</span> <span class="s2">&quot;删除&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;list&quot;</span><span class="p">:</span> <span class="s2">&quot;查询列表&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;create&quot;</span><span class="p">:</span> <span class="s2">&quot;创建&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;export&quot;</span><span class="p">:</span> <span class="s2">&quot;批量导出&quot;</span><span class="p">,</span>
+            <span class="p">}</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">action</span> <span class="o">=</span> <span class="n">permission_code</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;__&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+                <span class="n">module</span> <span class="o">=</span> <span class="n">permission_code</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;__&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">)[</span><span class="mi">2</span><span class="p">]</span>
+            <span class="k">except</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">write</span><span class="p">(</span>
+                    <span class="s2">&quot;permission_code </span><span class="si">%s</span><span class="s2">, name invalid, use directly&quot;</span> <span class="o">%</span> <span class="n">permission_code</span>
+                <span class="p">)</span>
+                <span class="k">return</span> <span class="n">permission_code</span>
+
+            <span class="k">return</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">:</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">module</span><span class="p">,</span> <span class="n">name_mapping</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">action</span><span class="p">,</span> <span class="n">action</span><span class="p">))</span>
+
+        <span class="c1"># Permission.objects.filter(name__contains=&quot;导出&quot;).delete()</span>
+        <span class="k">for</span> <span class="n">permission</span> <span class="ow">in</span> <span class="n">permissions</span><span class="p">:</span>
+            <span class="n">ct</span> <span class="o">=</span> <span class="n">ContentType</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get_by_natural_key</span><span class="p">(</span>
+                <span class="n">permission</span><span class="p">[</span><span class="s2">&quot;app_label&quot;</span><span class="p">],</span> <span class="n">permission</span><span class="p">[</span><span class="s2">&quot;model_name&quot;</span><span class="p">]</span>
+            <span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">Permission</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span>
+                <span class="n">content_type</span><span class="o">=</span><span class="n">ct</span><span class="p">,</span> <span class="n">codename</span><span class="o">=</span><span class="n">permission</span><span class="p">[</span><span class="s2">&quot;permission_name&quot;</span><span class="p">]</span>
+            <span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Add </span><span class="si">{</span><span class="n">permission</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="n">Permission</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+                    <span class="n">name</span><span class="o">=</span><span class="n">get_permission_name</span><span class="p">(</span><span class="n">permission</span><span class="p">[</span><span class="s2">&quot;permission_name&quot;</span><span class="p">]),</span>
+                    <span class="n">content_type</span><span class="o">=</span><span class="n">ct</span><span class="p">,</span>
+                    <span class="n">codename</span><span class="o">=</span><span class="n">permission</span><span class="p">[</span><span class="s2">&quot;permission_name&quot;</span><span class="p">],</span>
+                <span class="p">)</span>
+</code></pre></div>
+
+
+<h2>reference</h2>
+<ul>
+<li>todo， 增加git</li>
+</ul>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>links</h2>
+                        <ul>
+                            <li><a href="https://getpelican.com/">Pelican</a></li>
+                            <li><a href="https://www.python.org/">Python.org</a></li>
+                            <li><a href="https://palletsprojects.com/p/jinja/">Jinja2</a></li>
+                            <li><a href="#">You can modify those links in your config file</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+                            <li><a href="https://cooleasyhan.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
+
+                            <li><a href="#">You can add links in your config file</a></li>
+                            <li><a href="#">Another social link</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="https://getpelican.com/">Pelican</a>, which takes great advantage of <a href="https://www.python.org/">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="https://www.smashingmagazine.com/2009/08/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

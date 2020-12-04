@@ -36,14 +36,14 @@
 <p>In <a href="https://cooleasyhan.github.io/category/drf.html">DRF</a>.</p>
 <p>tags: <a href="https://cooleasyhan.github.io/tag/drf.html">DRF</a> <a href="https://cooleasyhan.github.io/tag/django.html">Django</a> <a href="https://cooleasyhan.github.io/tag/python.html">Python</a> </p>
 </footer><!-- /.post-info -->      <p>DRF Serializer 容易由于字段过多，表间级联查询过多，造成性能较差，可以通过动态选择字段极大提升性能</p>
-<h3>场景</h3>
+<h2>场景</h2>
 <p>list 需要的字段少于 retrive 字段</p>
 <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">X</span><span class="p">(</span><span class="n">ModelViewSet</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="n">queryset</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">filter_queryset</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_queryset</span><span class="p">())</span>
 
         <span class="n">page</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">paginate_queryset</span><span class="p">(</span><span class="n">queryset</span><span class="p">)</span>
-        <span class="n">exclude_fields</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;field1&quot;</span><span class="p">,</span> <span class="s2">&quot;field2&quot;</span><span class="p">,</span> <span class="s2">&quot;fk_obj__field3&quot;</span> <span class="p">]</span> 
+        <span class="n">exclude_fields</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;field1&quot;</span><span class="p">,</span> <span class="s2">&quot;field2&quot;</span><span class="p">,</span> <span class="s2">&quot;fk_obj__field3&quot;</span> <span class="p">]</span>
         <span class="k">if</span> <span class="n">page</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">serializer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_serializer</span><span class="p">(</span>
                 <span class="n">page</span><span class="p">,</span> <span class="n">many</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exclude_fields</span><span class="o">=</span><span class="n">exclude_fields</span>
@@ -128,7 +128,7 @@
 </code></pre></div>
 
 
-<h3>Links</h3>
+<h2>reference</h2>
 <ul>
 <li>https://stackoverflow.com/questions/54893891/django-rest-framework-using-dynamicfieldsmodelserializer-for-excluding-serializ</li>
 <li>https://www.django-rest-framework.org/api-guide/serializers/#dynamically-modifying-fields</li>
